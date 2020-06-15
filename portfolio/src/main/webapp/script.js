@@ -26,20 +26,38 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
-//console.log('hiii');
 
-function getMessage(){
+function getMessage() {
     const fetchPromise = fetch('/data');
     fetchPromise.then(handleResponse);
 }
 
-function handleResponse(response){
+function handleResponse(response) {
     const responsePromise = response.text();
     responsePromise.then(createMessage);
 }
 
-function createMessage(messageText){
-    console.log(messageText);
+function createMessage(messageText) {
     const message = document.getElementById('greeting-container');
     message.innerHTML = messageText;
+}
+
+function fetchFromServer() {
+    fetch('/data').then(response => response.json()).then((jsonMessage) => {
+
+    const dogListElement = document.getElementById('greeting-container');
+    dogListElement.innerHTML = '';
+    dogListElement.appendChild(
+        createListElement('Dog 1: ' + jsonMessage[0]));
+    dogListElement.appendChild(
+        createListElement('Dog 2: ' + jsonMessage[1]));
+    dogListElement.appendChild(
+        createListElement('Dog 3: ' + jsonMessage[2]));
+    });
+}
+
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
 }
