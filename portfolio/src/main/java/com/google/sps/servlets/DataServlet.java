@@ -27,17 +27,13 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private ArrayList<String> strings = new ArrayList<String>();
+  private ArrayList<String> comments = new ArrayList<String>();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    strings.add("corgi"); 
-    strings.add("golden retriever");
-    strings.add("beagle");
-    String json = convertToJson(strings);
+    String json = convertToJson(comments);
 
     response.setContentType("application/json;");
-    //response.getWriter().println("<h1>Hello Isabella!</h1>");
     response.getWriter().println(json);
   }
 
@@ -45,6 +41,23 @@ public class DataServlet extends HttpServlet {
     Gson gson = new Gson();
     String json = gson.toJson(data);
     return json;
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String text = getParameter(request, "text-input", "");
+    comments.add(text);
+
+    response.sendRedirect("/index.html"); 
+  }
+
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 
 }
