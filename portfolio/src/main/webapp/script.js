@@ -43,21 +43,22 @@ function createMessage(messageText) {
 }
 
 function fetchFromServer() {
-    fetch('/data').then(response => response.json()).then((jsonMessage) => {
-
-    const dogListElement = document.getElementById('greeting-container');
-    dogListElement.innerHTML = '';
-    dogListElement.appendChild(
-        createListElement('Dog 1: ' + jsonMessage[0]));
-    dogListElement.appendChild(
-        createListElement('Dog 2: ' + jsonMessage[1]));
-    dogListElement.appendChild(
-        createListElement('Dog 3: ' + jsonMessage[2]));
+    fetch('/data').then(response => response.json()).then((comments) => {
+        const commentListElement = document.getElementById('greeting-container');
+        comments.forEach((comment) => {
+        commentListElement.appendChild(createCommentElement(comment));
+        });
     });
 }
 
-function createListElement(text) {
-  const liElement = document.createElement('li');
-  liElement.innerText = text;
-  return liElement;
+function createCommentElement(comment) {
+ 
+  const commentElement = document.createElement('li');
+  commentElement.className = 'comment';
+
+  const textElement = document.createElement('span');
+  textElement.innerText = comment;
+  commentElement.appendChild(textElement);
+  
+  return commentElement;
 }
