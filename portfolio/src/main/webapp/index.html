@@ -9,13 +9,13 @@
         }
     </style>
     <meta charset="UTF-8">
-    <title>My Portfolio</title>
+    <title>Isabella's Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="fetchFromServer()">
     <div id="content">
-      <h1>Isabella Rodriguez's Portfolio</h1>
+      <h1><center>Isabella Rodriguez's Portfolio</center></h1>
       <p>Hello there! Welcome to my portfolio. My name is Isabella. I am a junior attending the University of Florida pursuing a bachelor's degree in Computer Science.</p>
       <p>If you want to know a bit more about my professional career, check out my <a href="https://www.linkedin.com/in/isabella-rodriguez-cruz-00ba39194">Linkedin</a> and <a href="https://github.com/IsabellaRC">Github</a>.</p>
       <img src="images/Isabella.jpg" width="260" height="350" class="center"/>
@@ -28,10 +28,11 @@
       <p>Click here to learn random fun facts about me:</p>
       <button class="button button1" onclick="addRandomGreeting()">Fun Fact</button>
     <form action="/data" method="POST">
-      <p>Leave a comment below!</p>
+      <p><b>Leave a comment below!</b></p>
       <textarea name="text-input">Your comment here</textarea>
       <br/><br/>
       <input type="submit" class="button button1"/>
+      <p><b>Comments</b></p>
       <div id="greeting-container"></div>
     </div>
     </form>
