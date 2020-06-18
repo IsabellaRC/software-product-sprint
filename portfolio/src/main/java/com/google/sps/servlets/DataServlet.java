@@ -34,28 +34,24 @@ import java.util.List;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private ArrayList<String> comments = new ArrayList<String>();
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    comments.clear();
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+    ArrayList<String> comments = new ArrayList<String>();
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
       String text = (String) entity.getProperty("text");
-      long timestamp = (long) entity.getProperty("timestamp");
     
       comments.add(text);
     }
     Gson gson = new Gson();
 
-    response.setContentType("application/json;"); 
-    response.getWriter().println(gson.toJson(comments));
-  }
+      response.setContentType("application/json;"); 
+      response.getWriter().println(gson.toJson(comments));
+    }
 
   private String convertToJson(ArrayList data) {
     Gson gson = new Gson();
@@ -66,7 +62,6 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    comments.clear();
     String text = getParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis();
 
@@ -82,6 +77,6 @@ public class DataServlet extends HttpServlet {
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
-   return request.getParameter(name) == null ? defaultValue : value;
+   return value == null ? defaultValue : value;
   }
 }
