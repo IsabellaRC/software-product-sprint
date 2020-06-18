@@ -36,22 +36,39 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+<<<<<<< HEAD
+=======
+    comments.clear();
+>>>>>>> 196078732999d059b01fa4ebc425b38a0cf35895
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
+<<<<<<< HEAD
     ArrayList<String> comments = new ArrayList<String>();
     for (Entity entity : results.asIterable()) {
       String text = (String) entity.getProperty("text");
+=======
+    for (Entity entity : results.asIterable()) {
+      long id = entity.getKey().getId();
+      String text = (String) entity.getProperty("text");
+      long timestamp = (long) entity.getProperty("timestamp");
+>>>>>>> 196078732999d059b01fa4ebc425b38a0cf35895
     
       comments.add(text);
     }
     Gson gson = new Gson();
 
+<<<<<<< HEAD
       response.setContentType("application/json;"); 
       response.getWriter().println(gson.toJson(comments));
     }
+=======
+    response.setContentType("application/json;"); 
+    response.getWriter().println(gson.toJson(comments));
+  }
+>>>>>>> 196078732999d059b01fa4ebc425b38a0cf35895
 
   private String convertToJson(ArrayList data) {
     Gson gson = new Gson();
@@ -62,6 +79,7 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
+    comments.clear();
     String text = getParameter(request, "text-input", "");
     long timestamp = System.currentTimeMillis();
 
@@ -77,6 +95,10 @@ public class DataServlet extends HttpServlet {
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);
+<<<<<<< HEAD
    return value == null ? defaultValue : value;
+=======
+   return request.getParameter(name) == null ? defaultValue : value;
+>>>>>>> 196078732999d059b01fa4ebc425b38a0cf35895
   }
 }
