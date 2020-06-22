@@ -27,9 +27,21 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function getMessage() {
-    const fetchPromise = fetch('/data');
-    fetchPromise.then(handleResponse);
+function getMessage(selectedObject) {
+    let language = selectedObject.value;
+    if(language == "en"){
+        const fetchPromise = fetch('/data?language=en');
+        fetchPromise.then(handleResponse);
+    }
+    if(language == "es"){
+        const fetchPromise = fetch('/data?language=es');
+        fetchPromise.then(handleResponse);
+    }
+    if(language == "hi"){
+        const fetchPromise = fetch('/data?language=hi');
+        fetchPromise.then(handleResponse);
+    }
+
 }
 
 function handleResponse(response) {

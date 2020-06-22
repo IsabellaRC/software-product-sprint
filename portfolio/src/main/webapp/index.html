@@ -32,9 +32,15 @@
       <textarea name="text-input">Your comment here</textarea>
       <br/><br/>
       <input type="submit" class="button button1"/>
+      </form>
+      <p> Select the language to translate comments </p>
+    <select id="language" onchange="getMessage(this)">
+      <option value="en">English</option>
+      <option value="es">Spanish</option>
+      <option value="hi">Hindi</option>
+    </select>
       <p><b>Comments</b></p>
       <div id="greeting-container"></div>
     </div>
-    </form>
   </body>
 </html>
