@@ -17,7 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['I am almost a US citizen!', 'I have been chased by cows haha!', 'I have never broken any bones!', 'My favorite color is green!', 'I love to dance!', 'I have never had a pet!', ' I love corgis!'];
+      ['I have been chased by cows haha!', 'I have never broken any bones!', 'My favorite color is green!', 'I love to dance!', 'I have never had a pet!', ' I love corgis!'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
@@ -28,20 +28,44 @@ function addRandomGreeting() {
 }
 
 function getMessage(selectedObject) {
-    let language = selectedObject.value;
-    if(language == "en"){
+    const language = selectedObject.value;
+    
+    if(language == "en") {
         const fetchPromise = fetch('/data?language=en');
         fetchPromise.then(handleResponse);
     }
-    if(language == "es"){
+    else if(language == "es") {
         const fetchPromise = fetch('/data?language=es');
         fetchPromise.then(handleResponse);
     }
-    if(language == "hi"){
+    else if(language == "hi") {
         const fetchPromise = fetch('/data?language=hi');
         fetchPromise.then(handleResponse);
     }
-
+    else if(language == "pt") {
+        const fetchPromise = fetch('/data?language=pt');
+        fetchPromise.then(handleResponse);
+    }
+    else if(language == "it") {
+        const fetchPromise = fetch('/data?language=it');
+        fetchPromise.then(handleResponse);
+    }
+    else if(language == "fr") {
+        const fetchPromise = fetch('/data?language=fr');
+        fetchPromise.then(handleResponse);
+    }
+    else if(language == "ht") {
+        const fetchPromise = fetch('/data?language=ht');
+        fetchPromise.then(handleResponse);
+    }
+    else if(language == "he") {
+        const fetchPromise = fetch('/data?language=he');
+        fetchPromise.then(handleResponse);
+    }
+    else if(language == "ja") {
+        const fetchPromise = fetch('/data?language=ja');
+        fetchPromise.then(handleResponse);
+    }
 }
 
 function handleResponse(response) {

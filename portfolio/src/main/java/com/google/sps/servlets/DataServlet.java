@@ -28,6 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -43,15 +46,30 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     ArrayList<String> comments = new ArrayList<String>();
+    ArrayList<Translation> translatedComments = new ArrayList<Translation>();
+    ArrayList<String> stringOfTranslatedComments = new ArrayList<String>();
+    
     for (Entity entity : results.asIterable()) {
       String text = (String) entity.getProperty("text");
-    
       comments.add(text);
     }
-    Gson gson = new Gson();
+    
+    String languageCode = request.getParameter("language");
+    Translate translate = TranslateOptions.getDefaultInstance().getService();
+    
+    for(String comment : comments) {
+      Translation translation = translate.translate(comment, Translate.TranslateOption.targetLanguage(languageCode));
+      translatedComments.add(translation);
+    }
 
-      response.setContentType("application/json;"); 
-      response.getWriter().println(gson.toJson(comments));
+    for(Translation translatedComment : translatedComments) {
+      String translatedText = translatedComment.getTranslatedText();
+      stringOfTranslatedComments.add(translatedText);
+    }
+    
+    Gson gson = new Gson();
+      response.setContentType("application/json;charset=utf-8;"); 
+      response.getWriter().println(gson.toJson(stringOfTranslatedComments));
     }
 
   private String convertToJson(ArrayList data) {
