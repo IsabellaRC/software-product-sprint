@@ -16,19 +16,48 @@
  * Adds a random greeting to the page.
  */
 function addRandomGreeting() {
-  const greetings =
-      ['I am almost a US citizen!', 'I have been chased by cows haha!', 'I have never broken any bones!', 'My favorite color is green!', 'I love to dance!', 'I have never had a pet!', ' I love corgis!'];
+    const greetings =
+        ['I have been chased by cows haha!', 'I have never broken any bones!', 'My favorite color is green!', 'I love to dance!', 'I have never had a pet!', ' I love corgis!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+    // Pick a random greeting.
+    const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+    // Add it to the page.
+    const greetingContainer = document.getElementById('greeting-container');
+    greetingContainer.innerText = greeting;
 }
 
-function getMessage() {
-    const fetchPromise = fetch('/data');
+function getMessage(selectedObject) {
+    const language = selectedObject.value;
+    let fetchPromise;
+    
+    if(language == "en") {
+        fetchPromise = fetch('/data?language=en');
+    }
+    else if(language == "es") {
+        fetchPromise = fetch('/data?language=es');
+    }
+    else if(language == "hi") {
+        fetchPromise = fetch('/data?language=hi');
+    }
+    else if(language == "pt") {
+        fetchPromise = fetch('/data?language=pt');
+    }
+    else if(language == "it") {
+        fetchPromise = fetch('/data?language=it');
+    }
+    else if(language == "fr") {
+        fetchPromise = fetch('/data?language=fr');
+    }
+    else if(language == "ht") {
+        fetchPromise = fetch('/data?language=ht');
+    }
+    else if(language == "he") {
+        fetchPromise = fetch('/data?language=he');
+    }
+    else if(language == "ja") {
+        fetchPromise = fetch('/data?language=ja');
+    }
     fetchPromise.then(handleResponse);
 }
 
@@ -39,7 +68,7 @@ function handleResponse(response) {
 
 function createMessage(messageText) {
     const message = document.getElementById('greeting-container');
-    message.innerHTML = messageText;
+    message.innerText = messageText;
 }
 
 function fetchFromServer() {
@@ -52,13 +81,12 @@ function fetchFromServer() {
 }
 
 function createCommentElement(comment) {
- 
-  const commentElement = document.createElement('li');
-  commentElement.className = 'comment';
+    const commentElement = document.createElement('li');
+    commentElement.className = 'comment';
 
-  const textElement = document.createElement('span');
-  textElement.innerText = comment;
-  commentElement.appendChild(textElement);
-  
-  return commentElement;
+    const textElement = document.createElement('span');
+    textElement.innerText = comment;
+    commentElement.appendChild(textElement);
+    
+    return commentElement;
 }

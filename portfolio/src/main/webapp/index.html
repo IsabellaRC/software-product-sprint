@@ -27,14 +27,26 @@
       <p>Click <a href="favorites.html">here</a> to see some movies, shows, books, and musicians that I love!</p>
       <p>Click here to learn random fun facts about me:</p>
       <button class="button button1" onclick="addRandomGreeting()">Fun Fact</button>
-    <form action="/data" method="POST">
-      <p><b>Leave a comment below!</b></p>
-      <textarea name="text-input">Your comment here</textarea>
-      <br/><br/>
-      <input type="submit" class="button button1"/>
+      <form action="/data" method="POST">
+        <p><b>Leave a comment below!</b></p>
+        <textarea name="text-input">Your comment here</textarea>
+        <br/><br/>
+        <input type="submit" class="button button1"/>
+      </form>
+      <p> Select the language to translate comments </p>
+      <select id="language" onchange="getMessage(this)" class="button button1">
+        <option value="en">English</option>
+        <option value="es">Spanish</option>
+        <option value="hi">Hindi</option>
+        <option value="pt">Portuguese</option>
+        <option value="it">Italian</option>
+        <option value="fr">French</option>
+        <option value="ht">Creole</option>
+        <option value="he">Hebrew</option>
+        <option value="ja">Japanese</option>
+      </select>
       <p><b>Comments</b></p>
       <div id="greeting-container"></div>
     </div>
-    </form>
   </body>
 </html>
