@@ -16,56 +16,49 @@
  * Adds a random greeting to the page.
  */
 function addRandomGreeting() {
-  const greetings =
-      ['I have been chased by cows haha!', 'I have never broken any bones!', 'My favorite color is green!', 'I love to dance!', 'I have never had a pet!', ' I love corgis!'];
+    const greetings =
+        ['I have been chased by cows haha!', 'I have never broken any bones!', 'My favorite color is green!', 'I love to dance!', 'I have never had a pet!', ' I love corgis!'];
 
-  // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+    // Pick a random greeting.
+    const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
-  // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+    // Add it to the page.
+    const greetingContainer = document.getElementById('greeting-container');
+    greetingContainer.innerText = greeting;
 }
 
 function getMessage(selectedObject) {
     const language = selectedObject.value;
+    let fetchPromise;
     
     if(language == "en") {
-        const fetchPromise = fetch('/data?language=en');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=en');
     }
     else if(language == "es") {
-        const fetchPromise = fetch('/data?language=es');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=es');
     }
     else if(language == "hi") {
-        const fetchPromise = fetch('/data?language=hi');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=hi');
     }
     else if(language == "pt") {
-        const fetchPromise = fetch('/data?language=pt');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=pt');
     }
     else if(language == "it") {
-        const fetchPromise = fetch('/data?language=it');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=it');
     }
     else if(language == "fr") {
-        const fetchPromise = fetch('/data?language=fr');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=fr');
     }
     else if(language == "ht") {
-        const fetchPromise = fetch('/data?language=ht');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=ht');
     }
     else if(language == "he") {
-        const fetchPromise = fetch('/data?language=he');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=he');
     }
     else if(language == "ja") {
-        const fetchPromise = fetch('/data?language=ja');
-        fetchPromise.then(handleResponse);
+        fetchPromise = fetch('/data?language=ja');
     }
+    fetchPromise.then(handleResponse);
 }
 
 function handleResponse(response) {
@@ -75,7 +68,7 @@ function handleResponse(response) {
 
 function createMessage(messageText) {
     const message = document.getElementById('greeting-container');
-    message.innerHTML = messageText;
+    message.innerText = messageText;
 }
 
 function fetchFromServer() {
@@ -88,13 +81,12 @@ function fetchFromServer() {
 }
 
 function createCommentElement(comment) {
- 
-  const commentElement = document.createElement('li');
-  commentElement.className = 'comment';
+    const commentElement = document.createElement('li');
+    commentElement.className = 'comment';
 
-  const textElement = document.createElement('span');
-  textElement.innerText = comment;
-  commentElement.appendChild(textElement);
-  
-  return commentElement;
+    const textElement = document.createElement('span');
+    textElement.innerText = comment;
+    commentElement.appendChild(textElement);
+    
+    return commentElement;
 }

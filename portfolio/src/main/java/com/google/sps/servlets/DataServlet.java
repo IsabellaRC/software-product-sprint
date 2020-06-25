@@ -36,67 +36,47 @@ import com.google.cloud.translate.Translation;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
 
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
+        ArrayList<String> translatedComments = new ArrayList<String>();
+        String languageCode = request.getParameter("language");
+        Translate translate = TranslateOptions.getDefaultInstance().getService();
 
-    ArrayList<String> comments = new ArrayList<String>();
-    ArrayList<Translation> translatedComments = new ArrayList<Translation>();
-    ArrayList<String> stringOfTranslatedComments = new ArrayList<String>();
-    
-    for (Entity entity : results.asIterable()) {
-      String text = (String) entity.getProperty("text");
-      comments.add(text);
+        for (Entity entity : results.asIterable()) {
+            String comment = (String) entity.getProperty("text");
+            Translation translation = translate.translate(comment, Translate.TranslateOption.targetLanguage(languageCode));
+            translatedComments.add(translation.getTranslatedText());
+        }
+
+        Gson gson = new Gson();
+        response.setContentType("application/json;charset=utf-8;"); 
+        response.getWriter().println(gson.toJson(translatedComments));
     }
     
-    String languageCode = request.getParameter("language");
-    Translate translate = TranslateOptions.getDefaultInstance().getService();
-    
-    for(String comment : comments) {
-      Translation translation = translate.translate(comment, Translate.TranslateOption.targetLanguage(languageCode));
-      translatedComments.add(translation);
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Get the input from the form.
+        String text = getParameter(request, "text-input", "");
+        long timestamp = System.currentTimeMillis();
+
+        Entity commentEntity = new Entity("Comment");
+        commentEntity.setProperty("text", text);
+        commentEntity.setProperty("timestamp", timestamp);
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(commentEntity);
+
+        response.sendRedirect("/index.html"); 
     }
 
-    for(Translation translatedComment : translatedComments) {
-      String translatedText = translatedComment.getTranslatedText();
-      stringOfTranslatedComments.add(translatedText);
+    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+        String value = request.getParameter(name);
+        return value == null ? defaultValue : value;
     }
-    
-    Gson gson = new Gson();
-      response.setContentType("application/json;charset=utf-8;"); 
-      response.getWriter().println(gson.toJson(stringOfTranslatedComments));
-    }
-
-  private String convertToJson(ArrayList data) {
-    Gson gson = new Gson();
-    String json = gson.toJson(data);
-    return json;
-  }
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the input from the form.
-    String text = getParameter(request, "text-input", "");
-    long timestamp = System.currentTimeMillis();
-
-    Entity commentEntity = new Entity("Comment");
-    commentEntity.setProperty("text", text);
-    commentEntity.setProperty("timestamp", timestamp);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
-
-    response.sendRedirect("/index.html"); 
-  }
-
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-
-   return value == null ? defaultValue : value;
-  }
 }
