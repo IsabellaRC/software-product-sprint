@@ -27,10 +27,13 @@ import java.util.Map;
 public final class FindMeetingQuery {
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
 
-    ArrayList<Event> importantEvents = new ArrayList<Event>();
+    //The TreeMap stores pairs of key and value. It sorts pairs in ascending order based on their key.
+    //Key is start time of event and value is event. 
+    //So Events will be sorted based on their start time when they get added to the TreeMap.   
+    TreeMap<Integer, Event> eventsList = new TreeMap<Integer, Event>();
     
     //Go through events attendees and request attendees 
-    //and add only the important events to importantEvents.
+    //and add only the important events to TreeMap.
     //Important events are events that contain any of the attendees in the request attendees. 
 
     Iterator i = events.iterator();
@@ -43,7 +46,7 @@ public final class FindMeetingQuery {
             Iterator iterAttendee = request.getAttendees().iterator();
             String oneAttendee = (String)iterAttendee.next();
             if (currEvent.getAttendees().contains(oneAttendee)) {
-                importantEvents.add(currEvent);
+                eventsList.put(currEvent.getWhen().start(), currEvent);
             }
         }
         //if meeting request contains more than one attendee
@@ -51,21 +54,11 @@ public final class FindMeetingQuery {
             while (iter.hasNext()) {
                 String currentAttendee = (String)iter.next();
                 if (currEvent.getAttendees().contains(currentAttendee)) {
-                    importantEvents.add(currEvent);
+                    eventsList.put(currEvent.getWhen().start(), currEvent);
                     break;
                 }
             }
         }
-    }
-
-    //The TreeMap stores pairs of key and value. It sorts pairs in ascending order based on their key.
-    //Key is start time of event and value is event. 
-    //So Events will be sorted based on their start time when they get added to the TreeMap.   
-    TreeMap<Integer, Event> eventsList = new TreeMap<Integer, Event>();
-
-    //Filling TreeMap with only the important events
-    for (Event collectionEvent: importantEvents) {
-        eventsList.put(collectionEvent.getWhen().start(), collectionEvent);
     }
     
     //Need this in order to iterate through the TreeMap
@@ -80,7 +73,7 @@ public final class FindMeetingQuery {
     } 
 
     //If request has no attendees or there are no events already set up, return whole day
-    else if (request.getAttendees().isEmpty() || events.isEmpty() || importantEvents.isEmpty()) {
+    else if (request.getAttendees().isEmpty() || events.isEmpty() || eventsList.isEmpty()) {
         finalTimes.add(TimeRange.WHOLE_DAY);
     }
 
